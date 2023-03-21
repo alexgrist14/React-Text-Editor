@@ -38,14 +38,18 @@ const Note = ({note}: NoteProps): ReactElement => {
         dispatch(editNote({...note, note: e.target.value}));
     }
     return (
-        <div className='box' ref={ref}>
-            {
-                isEdit ? <input type="text" value={note.note} onChange={setEditedNote}/> : note.note
-            }
-            {note.tags.map(tag => (<Tag tag={tag} isEdit={isEdit} id={note.id}/>))}
+        <div className='box note' ref={ref}>
+            <div>
+                {
+                    isEdit ? <input type="text" value={note.note} onChange={setEditedNote}/> : note.note
+                }
+                {note.tags.map(tag => (<Tag tag={tag} isEdit={isEdit} id={note.id}/>))}
+            </div>
 
-            <button className='button' onClick={() => removeNote(note)}>✖</button>
-            <button className='button' onClick={toggleEditor}>✎</button>
+            <div className='action-btn__container'>
+                <button className='button' onClick={() => removeNote(note)}>✖</button>
+                <button className='button' onClick={toggleEditor}>✎</button>
+            </div>
         </div>
     );
 }

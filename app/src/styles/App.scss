@@ -6,7 +6,10 @@
 .notes {
   width: 700px;
 }
-
+.note{
+  display: flex !important;
+  justify-content: space-between !important;
+}
 .note-tag {
   position: relative;
   width: 100px;
