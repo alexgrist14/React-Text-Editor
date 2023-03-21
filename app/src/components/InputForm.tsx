@@ -60,16 +60,17 @@ const InputForm = (): ReactElement => {
         <>
             <div className='container mt-5'>
                 <form className='form' onSubmit={handleSubmit}>
-                <textarea value={textInputValue} onChange={(e) => {
+                <textarea required={true} value={textInputValue} onChange={(e) => {
                     parser(e.target.value);
                     setTextInputValue(e.target.value);
                     setNote(removeTags(e.target.value))
                     isSearchForm && setSearchQuery(e.target.value)
                 }} className='hero-body textarea is-primary' placeholder='Write your note.'></textarea>
-                    <button className={`button ${!isSearchForm && 'is-primary'}`} onClick={handleNoteClick}>Add note
+                    <button className={`button ${!isSearchForm && 'is-primary'}`} onClick={handleNoteClick}>
+                        Add note
                     </button>
-                    <button className={`button ${isSearchForm && 'is-primary'}`}
-                            onClick={() => setIsSearchForm(true)}>Search by tags
+                    <button className={`button ${isSearchForm && 'is-primary'}`} onClick={() => setIsSearchForm(true)}>
+                        Search by tags
                     </button>
                     {
                         tags.length !== 0 && !isSearchForm ?
