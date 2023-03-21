@@ -1,47 +1,44 @@
-import {ReactElement, useEffect, useState} from "react";
-import db from '../firebase.config';
+import {ReactElement, useMemo} from "react";
+import {useAppSelector} from "../hooks/redux";
 
-interface NoteData{
-    note:string,
-    posted_by:string
+import Note from "./Note";
+
+interface SearchProps {
+    search: string;
+    isSearchForm: boolean
 }
 
-const NotesList = ():ReactElement =>{
-    const [notes,setNotes] = useState<any>([]);
-    useEffect(()=>{
-        fetchNotes();
-    },[]);
+const NotesList = ({search, isSearchForm}: SearchProps): ReactElement => {
+    const {notes} = useAppSelector(state => state.noteReducer);
 
-    const fetchNotes = async ()=>{
-        const response = db.collection('notes');
-        const data = await response.get();
-        data.docs.forEach(item=>{
-            console.log(item);
-            setNotes([...notes,item.data()])
-        })
-    }
+    const filterNotes = useMemo(() => {
+        return notes.filter(note => note.tags.some(tag => tag === search))
+    }, [search, notes]);
 
-    const addNotes = async ()=>{
-        const data ={
-            note:'Gheralt',
-            posted_by: '12'
-        }
-        await db.collection('notes').doc('UjTPQhzVtKmOog8raKxK').update(data);
-    }
     return (
-        <div>
+        <div className='mt-5'>
             {
-                notes&&notes.map((note:NoteData)=>{
-                    return(
-                        <div onClick={addNotes} className='hero' key={Math.random()}>
-                            {note.note}
-                            {note.posted_by}
+                isSearchForm ? filterNotes.length === 0 ? '' :
+                        <div className='notes is-centered container box'>
+                            {
+                                filterNotes.map((note) => (
+                                    <Note note={note}/>
+                                ))
+                            }
                         </div>
-                    )
-                })
+                    :
+                    notes.length === 0 ? '' :
+                        <div className='notes is-centered container box'>
+                            {
+                                notes.map((note) => (
+                                    <Note note={note}/>
+                                ))
+                            }
+                        </div>
             }
         </div>
+
     );
-}
+};
 
 export default NotesList;
