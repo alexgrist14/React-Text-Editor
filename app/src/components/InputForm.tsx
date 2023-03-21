@@ -60,7 +60,7 @@ const InputForm = (): ReactElement => {
         <>
             <div className='container mt-5'>
                 <form className='form' onSubmit={handleSubmit}>
-                <textarea required={true} value={textInputValue} onChange={(e) => {
+                <textarea value={textInputValue} onChange={(e) => {
                     parser(e.target.value);
                     setTextInputValue(e.target.value);
                     setNote(removeTags(e.target.value))
